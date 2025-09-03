@@ -1,12 +1,17 @@
 import { VideoEmbedCode } from './VideoEmbedCode';
 import Link from 'next/link';
+import { Video } from '../types/types';
 
-export default async function VideoDetails({ selectedVideo }) {
-  // console.log(selectedVideo);
+type VideoDetailsProps = {
+  selectedVideo: Video | undefined;
+};
 
+export default async function VideoDetails({
+  selectedVideo,
+}: VideoDetailsProps) {
   const video = selectedVideo;
 
-  if (!selectedVideo) {
+  if (!selectedVideo || video == undefined) {
     return <></>;
   }
 

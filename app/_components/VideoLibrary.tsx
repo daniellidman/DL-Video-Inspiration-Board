@@ -2,10 +2,32 @@
 
 import Image from 'next/image';
 import { useState } from 'react';
+import { usePathname, useSearchParams, useRouter } from 'next/navigation';
+import { Video } from '../types/types';
 
-export default function VideoLibrary({ allLikes }) {
+type VideoLibraryProps = {
+  allLikes: Video[];
+};
+
+export default function VideoLibrary({ allLikes }: VideoLibraryProps) {
+  const searchParams = useSearchParams();
+  const router = useRouter();
+  const pathname = usePathname();
+
   const likes = allLikes;
   const [filteredLikes, setFilteredLikes] = useState(likes);
+
+  function handleClick(likeID: string) {
+    const params = new URLSearchParams(searchParams);
+    params.set('videoID', likeID);
+    router.replace(`${pathname}?${params.toString()}`, { scroll: false });
+
+    window.scrollTo({
+      top: 0,
+      left: 0,
+      behavior: 'smooth',
+    });
+  }
 
   return (
     <div>
@@ -31,7 +53,7 @@ export default function VideoLibrary({ allLikes }) {
                   fill
                   className="z-10 w-full object-cover"
                   alt={like.name}
-                  onClick={() => handleClick(like)}
+                  onClick={() => handleClick(like.id)}
                 />
               </div>
               <h3 className="p-4 text-lg font-bold text-white">{like.name}</h3>

@@ -1,6 +1,11 @@
 import { supabase } from './supabase';
+import { DatabaseVideo, Video } from '../types/types';
 
-export async function getLikes() {
+function mapDbVideo(v: DatabaseVideo): Video {
+  return { ...v, id: String(v.id), yearPublished: String(v.yearPublished) };
+}
+
+export async function getLikes(): Promise<Video[]> {
   const { data, error } = await supabase
     .from('videos')
     .select('*')
@@ -13,5 +18,5 @@ export async function getLikes() {
     );
   }
 
-  return data;
+  return data?.map(mapDbVideo) ?? [];
 }
