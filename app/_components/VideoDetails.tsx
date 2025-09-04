@@ -19,7 +19,7 @@ export default async function VideoDetails({
     <div className="mb-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2">
       <div className="m-5">
         <div className="w-full rounded-md">
-          <VideoEmbedCode video={video} />
+          <VideoEmbedCode videoURL={video.url} videoThumb={video.thumbnail} />
         </div>
       </div>
       <div className="m-5 overflow-scroll text-wrap break-words text-white">

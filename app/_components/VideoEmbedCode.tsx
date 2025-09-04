@@ -1,11 +1,17 @@
 'use client';
 import { Tweet } from 'react-tweet';
 
-export function VideoEmbedCode({ video }) {
+export function VideoEmbedCode({
+  videoURL,
+  videoThumb,
+}: {
+  videoURL: string;
+  videoThumb: string;
+}) {
   // VIMEO
-  if (video.url.includes('vimeo.com')) {
+  if (videoURL.includes('vimeo.com')) {
     // Extract Vimeo video ID
-    const match = video.url.match(/vimeo\.com\/(?:.*\/)?(\d+)/);
+    const match = videoURL.match(/vimeo\.com\/(?:.*\/)?(\d+)/);
     if (!match) {
       throw new Error('Invalid Vimeo URL');
     }
@@ -25,8 +31,8 @@ export function VideoEmbedCode({ video }) {
   }
 
   // YOUTUBE
-  if (video.url.includes('youtube.com') || video.url.includes('youtu.be')) {
-    const id = video.url.split('?v=')[1];
+  if (videoURL.includes('youtube.com') || videoURL.includes('youtu.be')) {
+    const id = videoURL.split('?v=')[1];
 
     return (
       <div className="relative h-0 overflow-hidden rounded-xl pb-[56.25%] shadow-md">
@@ -35,8 +41,8 @@ export function VideoEmbedCode({ video }) {
           // height="full"
           src={`https://www.youtube.com/embed/${id}`}
           title="YouTube video player"
-          frameborder="0"
-          allowfullscreen
+          frameBorder="0"
+          allowFullScreen
           className="aspect-video w-full"
         ></iframe>
       </div>
@@ -44,21 +50,21 @@ export function VideoEmbedCode({ video }) {
   }
 
   // TWITTER / X
-  if (video.url.includes('twitter.com' || video.url.includes('x.com'))) {
-    const id = video.url.split('status/')[1];
+  if (videoURL.includes('twitter.com') || videoURL.includes('x.com')) {
+    const id = videoURL.split('status/')[1];
 
     console.log(id);
 
     return <Tweet id={id} />;
   }
 
-  if (video.url.includes('instagram.com')) {
+  if (videoURL.includes('instagram.com')) {
     // INSTAGRAM EMBED CODE HERE
     return <></>;
   } else {
     return (
       <div className="relative h-0 overflow-hidden rounded-xl pb-[56.25%] shadow-md">
-        <img src={video.thumbnail} alt="No embeddable video" width="full" />
+        <img src={videoThumb} alt="No embeddable video" width="full" />
         {/* <iframe
                   src={`https://player.vimeo.com/video/724972964?h=59d1872ce3&autoplay=0`}
                   frameBorder="0"
