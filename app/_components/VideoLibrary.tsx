@@ -4,6 +4,7 @@ import Image from 'next/image';
 import { useState } from 'react';
 import { usePathname, useSearchParams, useRouter } from 'next/navigation';
 import { Video } from '../types/types';
+import Link from 'next/link';
 
 type VideoLibraryProps = {
   allLikes: Video[];
@@ -16,6 +17,10 @@ export default function VideoLibrary({ allLikes }: VideoLibraryProps) {
 
   const likes = allLikes;
   const [filteredLikes, setFilteredLikes] = useState(likes);
+
+  function handleControlClick(likeURL: string) {
+    window.open(likeURL);
+  }
 
   function handleClick(likeID: string) {
     const params = new URLSearchParams(searchParams);
@@ -53,7 +58,13 @@ export default function VideoLibrary({ allLikes }: VideoLibraryProps) {
                   fill
                   className="z-10 w-full object-cover"
                   alt={like.name}
-                  onClick={() => handleClick(like.id)}
+                  //
+                  // Cmd-Click to open URL in new tab, or click to open in app.
+                  onClick={(e) => {
+                    if (e.ctrlKey || e.metaKey)
+                      return handleControlClick(like.url);
+                    handleClick(like.id);
+                  }}
                 />
               </div>
               <h3 className="p-4 text-lg font-bold text-white">{like.name}</h3>
