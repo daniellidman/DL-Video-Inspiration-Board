@@ -1,4 +1,5 @@
 'use client';
+import Image from 'next/image';
 import { Tweet } from 'react-tweet';
 
 export function VideoEmbedCode({
@@ -60,18 +61,32 @@ export function VideoEmbedCode({
 
   if (videoURL.includes('instagram.com')) {
     // INSTAGRAM EMBED CODE HERE
-    return <></>;
-  } else {
     return (
       <div className="relative h-0 overflow-hidden rounded-xl pb-[56.25%] shadow-md">
-        <img src={videoThumb} alt="No embeddable video" width="full" />
-        {/* <iframe
-                  src={`https://player.vimeo.com/video/724972964?h=59d1872ce3&autoplay=0`}
-                  frameBorder="0"
-                  allow="fullscreen; picture-in-picture"
-                  allowFullScreen
-                  className="absolute left-0 top-0 h-full w-full"
-                ></iframe> */}
+        <Image
+          src="/tempThumb.jpg"
+          fill
+          className="z-10 w-full object-cover hover:opacity-30"
+          alt="No embeddable video"
+        />
+        <p className="my-20 text-lg text-white text-center">
+          No embeddable video
+        </p>
+      </div>
+    );
+  } else {
+    console.log(videoThumb);
+    return (
+      <div className="relative h-0 overflow-hidden rounded-xl pb-[56.25%] shadow-md">
+        <Image
+          src="/tempThumb.jpg"
+          fill
+          className="z-10 w-full object-cover hover:opacity-30"
+          alt="No embeddable video"
+        />
+        <p className="my-20 text-lg text-white text-center">
+          No embeddable video
+        </p>
       </div>
     );
   }

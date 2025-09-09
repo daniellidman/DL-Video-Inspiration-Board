@@ -4,7 +4,6 @@ import Image from 'next/image';
 import { useState } from 'react';
 import { usePathname, useSearchParams, useRouter } from 'next/navigation';
 import { Video } from '../types/types';
-import Link from 'next/link';
 
 type VideoLibraryProps = {
   allLikes: Video[];
@@ -17,6 +16,7 @@ export default function VideoLibrary({ allLikes }: VideoLibraryProps) {
 
   const likes = allLikes;
   const [filteredLikes, setFilteredLikes] = useState(likes);
+  const [searchText, setSearchText] = useState('');
 
   function handleControlClick(likeURL: string) {
     window.open(likeURL);
@@ -34,18 +34,64 @@ export default function VideoLibrary({ allLikes }: VideoLibraryProps) {
     });
   }
 
+  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+
+    console.log(searchText);
+
+    // ERROR CATCHING
+    if (!searchText || searchText === '') {
+      setFilteredLikes(likes);
+      return;
+    }
+
+    function likeMatchesSearch(like: Video) {
+      if (like.author.toLowerCase().includes(searchText.toLowerCase())) {
+        return true;
+      } else if (like.name.toLowerCase().includes(searchText.toLowerCase())) {
+        return true;
+      } else if (
+        like.notes &&
+        like.notes.toLowerCase().includes(searchText.toLowerCase())
+      ) {
+        return true;
+      } else if (like.url.toLowerCase().includes(searchText.toLowerCase())) {
+        return true;
+      } else if (
+        like.tags &&
+        like.tags.toLowerCase().includes(searchText.toLowerCase())
+      ) {
+        return true;
+      } else if (like.yearPublished.includes(searchText)) {
+        return true;
+      } else {
+        return false;
+      }
+    }
+
+    const newLikes = likes.filter(likeMatchesSearch);
+
+    // FORM SUBMIT FUNCTION
+    setFilteredLikes(newLikes);
+  }
+
   return (
     <div>
-      <div className="flex w-full bg-gray-900">
-        <button>
-          <Image
-            src="/filter.png"
-            alt="Sort Icon"
-            width={30}
-            height={30}
-            className="my-2 ml-5"
+      <div className="w-full grid bg-gray-900 py-2 justify-items-center">
+        <form
+          onSubmit={(e) => handleSubmit(e)}
+          className="w-1/2 m-1 outline-1 outline-gray-600 rounded-md"
+        >
+          <input
+            name="textInput"
+            id="textInput"
+            type="text"
+            placeholder="Search"
+            value={searchText || ''}
+            onChange={(e) => setSearchText(e.target.value)}
+            className="w-full p-1"
           />
-        </button>
+        </form>
       </div>
 
       <div className="flex flex-wrap justify-between gap-2">

@@ -16,7 +16,7 @@ export default async function Home({
   return (
     <div>
       <VideoDetails selectedVideo={selectedVideo} />
-      <VideoLibrary allLikes={allLikes} />;
+      <VideoLibrary allLikes={allLikes} />
     </div>
   );
 }
