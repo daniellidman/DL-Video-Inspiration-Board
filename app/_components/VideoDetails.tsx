@@ -22,7 +22,7 @@ export default async function VideoDetails({
           <VideoEmbedCode videoURL={video.url} videoThumb={video.thumbnail} />
         </div>
       </div>
-      <div className="m-5 overflow-scroll text-wrap break-words text-white">
+      <div className="m-5 overflow-y-auto no-scrollbar  text-wrap break-words text-white">
         <h1 className="text-2xl font-bold">{video.name}</h1>
         <h2 className="mb-1 mt-1 text-lg font-semibold">{video.author}</h2>
         <Link
